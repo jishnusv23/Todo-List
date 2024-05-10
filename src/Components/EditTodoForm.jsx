@@ -22,7 +22,7 @@ const EditTodoForm = ({ editTodo, task }) => {
         className="edit-todo-input"
       />
       <button type="submit" className="todo-btn-1">
-        Update Task
+        Task
       </button>
     </form>
   );
