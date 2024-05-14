@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoForm from "./TodoForm";
 import { Todo } from "./Todo";
 import EditTodoForm from "./EditTodoForm";
@@ -7,6 +7,10 @@ import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 const TodoWrapper = () => {
   const [todos, setTodos] = useState([]);
+  useEffect(() => {
+    const saveTodo = JSON.parse(localStorage.getItem("Todoitem")) || [];
+    setTodos(saveTodo);
+  }, []);
 
   const addTodo = (todo) => {
     const newTodo = {
@@ -16,11 +20,14 @@ const TodoWrapper = () => {
       isEditing: false,
     };
     setTodos([...todos, newTodo]);
+    const update = [...todos, newTodo];
+    localStorage.setItem("Todoitem", JSON.stringify(update));
   };
 
   const deleteTodo = (id) => {
     const newTodos = todos.filter((todo) => todo.id !== id);
     setTodos(newTodos);
+    localStorage.setItem("Todoitem", JSON.stringify(newTodos));
   };
 
   const editTodo = (id) => {
@@ -36,13 +43,14 @@ const TodoWrapper = () => {
       todo.id === id ? { ...todo, task, isEditing: false } : todo
     );
     setTodos(newTodos);
+    localStorage.setItem("Todoitem", JSON.stringify(newTodos));
   };
   const toggleComplete = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
+    const newTodo = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
+    setTodos(newTodo);
+    localStorage.setItem("Todoitem", JSON.stringify(newTodo));
   };
 
   return (
